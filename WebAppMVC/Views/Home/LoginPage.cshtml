@@ -1,0 +1,51 @@
+﻿@model IEnumerable<WebAppMVC.Models.Login>
+
+@{
+    ViewBag.Title = "LoginPage";
+}
+
+<h2>LoginPage</h2>
+
+@{
+    var Password = "";
+    var Email = "";
+   
+    if (IsPost)
+    {
+
+        Password = Request["Password"];
+        Email = Request["Email"];
+
+       
+
+
+    }
+}
+
+<form id="form1" method="post">
+    <div>
+        <table>
+            <tr>
+                <td>Email:</td>
+                <td><input id="Email" name="Email" type="text" /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input id="Password" name="Password" type="text" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Submit" /></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        @if (Email != "")
+        {
+            <p>Email: @Email</p>
+            <p>Password: @Password</p>
+        }
+    </div>
+</form>
+
+

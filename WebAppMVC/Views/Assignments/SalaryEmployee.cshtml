@@ -1,0 +1,123 @@
+﻿@model IEnumerable<WebAppMVC.Models.Assignment>
+
+@{
+    ViewBag.Title = "SalaryEmployee";
+}
+
+<h2>SalaryEmployee</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.JobTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HoursAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OB1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OB2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Karens)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SickLeave)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VAB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vacation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VacationCompensation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExtraCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GPSLocation)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.CompanyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.JobTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HoursAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OB1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OB2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Karens)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SickLeave)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VAB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Vacation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VacationCompensation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExtraCost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GPSLocation)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AssignmentID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AssignmentID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AssignmentID })
+        </td>
+    </tr>
+}
+
+</table>
