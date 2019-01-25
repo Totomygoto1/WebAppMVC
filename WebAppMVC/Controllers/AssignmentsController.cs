@@ -17,6 +17,10 @@ namespace WebAppMVC.Controllers
 
         public string email { get; set; }
         public string password { get; set; }
+        public string workhours { get; set; }
+        public string hourly { get; set; }
+        public string total { get; set; }
+        public string employeename { get; set; }
 
         public ActionResult LoginView()
         {
@@ -75,7 +79,6 @@ namespace WebAppMVC.Controllers
         public ActionResult EmployeeIndex(int? id)
         {
             var assignment = db.Assignment.Include(a => a.Customer).Include(a => a.Employee).Where(a => a.EmployeeID == id);
-
             return View(assignment.ToList());
         }
                  
@@ -87,10 +90,12 @@ namespace WebAppMVC.Controllers
             // List all Workhours per month per employee
             // Calendar pick first and last date - pass in value - Do Search .. 
             // List the Sum of the Hours picked between two certain dates ..
-            // Input Search Box .. Submit button ..
+            // Dropdown Employees ..
 
             return View(assignment.ToList());
         }
+
+        public IList<Assignment> salary { get; set; }
 
         // GET: Assignments - Show Salary Sum per Month for specific Employee - Assignments?id=1 .. 
         public ActionResult SalaryEmployee(int? id)
@@ -98,9 +103,36 @@ namespace WebAppMVC.Controllers
             // List all hours - add and deduct special cost --
             // SP - add per row then sum it up - then taxes ..
 
-            var assignment = db.Assignment.Include(a => a.Customer).Include(a => a.Employee).Where(a => a.EmployeeID == id);
+            decimal TotalHours = 0;
+            decimal TotalSalary = 0;
+            decimal HourlyPay = 0;
+            string Name = "";
 
-            return View(assignment.ToList());
+            // Get Hourly Salary from Employee
+
+            salary = db.Assignment.Include(a => a.Customer).Include(a => a.Employee).Where(a => a.EmployeeID == id).ToList();
+
+            foreach (var el in salary)
+            {
+                ViewBag.workhours += el.HoursAmount + " * " + el.Employee.HourlySalary + " <br> ";
+
+                TotalHours += el.HoursAmount;
+
+                HourlyPay = el.Employee.HourlySalary;
+                Name = el.Employee.FirstName + " " + el.Employee.LastName;
+
+                if (el.OB1 != 0)
+                {
+                }
+            }
+            TotalSalary = TotalHours * HourlyPay;
+
+            ViewBag.employeename = Name;
+            ViewBag.hourly = "Hourly Salary: " + HourlyPay + " SEK";
+            ViewBag.workhours = "Total Hours: " + TotalHours + " Hours";
+            ViewBag.total = "Total Salary: " + TotalSalary + "  ";
+
+            return View(salary);
         }
 
         // GET: Assignments/Details/5
