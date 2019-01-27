@@ -107,9 +107,10 @@
             @Html.DisplayFor(modelItem => item.ContractFile)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.EmployeeID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.EmployeeID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.EmployeeID })
+            @Html.ActionLink("View WorkHours & Salary", "../Assignments/SalaryEmployee", new { id = item.EmployeeID }) |
+            @Html.ActionLink("Edit", "Edit", new { id = item.EmployeeID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.EmployeeID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeID })
         </td>
     </tr>
 }

@@ -21,50 +21,9 @@ namespace WebAppMVC.Controllers
         public string hourly { get; set; }
         public string total { get; set; }
         public string employeename { get; set; }
+        public string startmonth = "0";
+        public string startyear = "0";
 
-        public ActionResult LoginView()
-        {
-            return View();
-        }
-
-        public IList<Login> user { get; set; }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LoginView([Bind(Include = "Email,Password")] Login login)
-        {
-
-            //var log = db.Login.Include(a => a.Employee).Where(a => a.Email == login.Email).Where(a => a.Password == login.Password);
-
-            //List<Login> loguser = log.ToList();
-
-            user = db.Login.Include(a => a.Employee).Where(a => a.Email == login.Email).Where(a => a.Password == login.Password).ToList();
-
-            foreach (var el in user)
-            {
-                
-                // ViewBag.email += el.EmployeeID + " ";
-
-                if (el.Employee.JobTitle == "Kontoret")
-                {                   
-                    MvcHelper.SetCookie("Kontoret", el.EmployeeID.ToString());
-
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    MvcHelper.SetCookie("Employee", el.EmployeeID.ToString());
-
-                    return RedirectToAction("EmployeeIndex/" + el.EmployeeID);
-                }
-            }
-
-            ViewBag.email = login.Email;
-            ViewBag.password = login.Password + " Try again - Email or Password incorrect ";
-
-            return View(login);
-
-        }
 
 
         // GET: Assignments - Show All Assignments
@@ -97,20 +56,54 @@ namespace WebAppMVC.Controllers
 
         public IList<Assignment> salary { get; set; }
 
+        
         // GET: Assignments - Show Salary Sum per Month for specific Employee - Assignments?id=1 .. 
         public ActionResult SalaryEmployee(int? id)
         {
             // List all hours - add and deduct special cost --
             // SP - add per row then sum it up - then taxes ..
 
+            //var ID = Request.Cookies["sitecookies"]["Email"].ToString();
+            //var id = Convert.ToInt32(ID);
+
+            if (Request["Year"] != null)
+            {
+                startyear = Request["Year"];
+            }
+            else
+            {
+                startyear = "2019";
+            }
+
+            if (Request["Month"] != null)
+            {
+                startmonth = Request["Month"];
+            }
+            else
+            {
+                startmonth = "1";
+            }
+
+            int intyear = Convert.ToInt32(startyear);
+            int intmonth = Convert.ToInt32(startmonth);
+            int days = DateTime.DaysInMonth(intyear, intmonth);
+
+            ViewBag.startyear = startyear;
+            ViewBag.startmonth = startmonth;
+
+            string d = startyear + "-" + startmonth + "-01 00:00:00";
+            DateTime startdate = Convert.ToDateTime(d);
+
+            string d2 = startyear + "-" + startmonth + "-" + days.ToString() + " 00:00:00";
+            
+            DateTime enddate = Convert.ToDateTime(d2);
+
             decimal TotalHours = 0;
             decimal TotalSalary = 0;
             decimal HourlyPay = 0;
             string Name = "";
 
-            // Get Hourly Salary from Employee
-
-            salary = db.Assignment.Include(a => a.Customer).Include(a => a.Employee).Where(a => a.EmployeeID == id).ToList();
+            salary = db.Assignment.Include(a => a.Customer).Include(a => a.Employee).Where(a => a.EmployeeID == id).Where(a => a.Date >= startdate).Where(a => a.Date <= enddate).ToList();
 
             foreach (var el in salary)
             {

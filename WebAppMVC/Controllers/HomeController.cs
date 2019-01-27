@@ -13,48 +13,59 @@ namespace WebAppMVC.Controllers
     {
         private DBContext db = new DBContext();
 
+        public string email { get; set; }
+        public string password { get; set; }
+
         public ActionResult Index()
         {
+            ViewBag.Message = "Welcome! Please fill in your Login Details.";
             return View();
+        }
+
+        public IList<Login> user { get; set; }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public ActionResult Index([Bind(Include = "Email,Password")] Login login)
+        {
+
+            user = db.Login.Include(a => a.Employee).Where(a => a.Email == login.Email).Where(a => a.Password == login.Password).ToList();
+
+            foreach (var el in user)
+            {
+
+                if (el.Employee.JobTitle == "Kontoret")
+                {
+                    MvcHelper.SetCookie("Kontoret", el.EmployeeID.ToString());
+
+                    return RedirectToAction("../Assignments/Index");
+                }
+                else
+                {
+                    MvcHelper.SetCookie("Employee", el.EmployeeID.ToString());
+
+                    return RedirectToAction("../Assignments/EmployeeIndex/" + el.EmployeeID);
+                }
+            }
+
+            ViewBag.email = login.Email;
+            ViewBag.password = login.Password + " Try again - Email or Password incorrect ";
+
+            return View(login);
+
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Welcome to SwipeIT Inc.!";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
-        public Login logEmp { get; set; }
-
-        // GET: Employees
-        public ActionResult LoginPage(string Email, string Password)
-        {
-            var log = db.Login.Include(a => a.Employee).Where(a => a.Email == Email).Where(a => a.Password == Password);
-
-            /*
-            logEmp = (Login)db.Login.Include(a => a.Employee).Where(a => a.Email == Email).Where(a => a.Password == Password);
-
-            if (logEmp == null)
-            {
-                return View();
-            }
-            else if (logEmp.EmployeeID == 1)
-            {
-                return RedirectToAction("../Assignments/EmployeeIndex?id=" + logEmp.EmployeeID);
-            }
-            else
-            {
-
-            }
-            */
+            ViewBag.Message = "Please Do stay in Touch!";
 
             return View();
         }
