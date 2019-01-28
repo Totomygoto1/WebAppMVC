@@ -24,6 +24,8 @@ namespace WebAppMVC {
         /// <param name="mailSmtpServer">почтовый сервер</param>
         /// <param name="FileName">наименование файла</param>
         /// <returns>успех/неудача</returns>
+        /// 
+        /*
         public static bool SendMail(string mailFrom, string mailTo, string mailSubject, string mailBody, IEnumerable<HttpPostedFileBase> files, bool isHtml = true) {
             bool _mailSended;
             try {
@@ -53,6 +55,7 @@ namespace WebAppMVC {
             }
             return _mailSended;
         }
+        */
 
         /// <summary>
         /// Перемещение (переименование) папки

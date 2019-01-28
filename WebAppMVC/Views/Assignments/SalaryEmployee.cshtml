@@ -24,39 +24,46 @@
 
 <form method="post" action="">
     <div>
-                Choose which Year:
-                <select name="Year">
-                    <option value="2019">2019</option>
-                    <option value="2018">2018</option>
-                    <option value="2017">2017</option>
-                </select>
-                Choose which Month:
-                <select name="Month">
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </select>
-                &nbsp;
+        <p>
+            Please Select which Year and Month you want to see the Salary for. <br />
+            Choose Year:
+            <select name="Year">
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+            </select>
+            Choose Month:
+            <select name="Month">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+        </p>
+                <p>
+                    Send The Final Salary Receipt to your Employee (email) ? <br />
+                    Please Confirm with a Yes or No.
+                    <select name="SendEmail">
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </p>
                 <input type="submit" value="Submit" />
         </div>
-    <div style="padding:10px;">
-        <p>
-            Your choosen year: @ViewBag.startyear
-            Your choosen month: @ViewBag.startmonth
-        </p>
-    </div>
 </form>
 
 <hr />
+<p>
+    @ViewBag.timeperiod
+</p>
 <p>
     @ViewBag.hourly
 </p>
