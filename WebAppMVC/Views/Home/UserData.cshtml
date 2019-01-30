@@ -16,9 +16,9 @@
         var userData = firstName + "," + lastName +
             "," + email + Environment.NewLine;
 
-        var dataFile = Server.MapPath("~/App_Data/data.txt");
-        /*File.WriteAllText(@dataFile, userData);*/
-        File.AppendAllText(@dataFile, userData);
+        var dataFile = Server.MapPath("~/App_Data/salary.pdf");
+        File.WriteAllText(@dataFile, userData);
+        //File.AppendAllText(@dataFile, userData);
         result = "Information saved.";
     }
 }

@@ -7,8 +7,40 @@
     <title>@ViewBag.Title - Time Report</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        tr {
+            font-family: Verdana;
+            font-size: 12px;
+            color: white;
+        }
+        dl {
+            font-family: Verdana;
+            font-size: 12px;
+            color: white;
+        }
+        p {
+            font-family: Verdana;
+            font-size: 12px;
+            color: cornflowerblue;
+        }
+        div {
+            font-family: Verdana;
+            font-size: 12px;
+            color: cornflowerblue;
+        }
+        h4 {
+            font-family: Verdana;
+            font-size: 16px;
+            color: cornflowerblue;
+        }
+        h2 {
+            font-family: Verdana;
+            font-size: 22px;
+            color: white;
+        }
+    </style>
 </head>
-<body>
+<body background="~/images/darkgrey_bg.png">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -63,8 +95,9 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
+        
         <footer>
-            <p>&copy; @DateTime.Now.Year - Time Report</p>
+            <p>&copy; @DateTime.Now.Year - SwipeIT Inc.</p>
         </footer>
     </div>
 

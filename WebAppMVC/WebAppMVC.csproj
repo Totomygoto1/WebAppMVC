@@ -51,7 +51,19 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Syncfusion.Compression.Base, Version=16.4460.0.48, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Compression.Base.16.4.0.48\lib\net46\Syncfusion.Compression.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Licensing, Version=16.4460.0.48, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.16.4.0.48\lib\net46\Syncfusion.Licensing.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Pdf.Base, Version=16.4450.0.48, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Pdf.AspNet.Mvc5.16.4.0.48\lib\net45\Syncfusion.Pdf.Base.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -163,6 +175,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\bubble-bg.png" />
+    <Content Include="images\bubbles.jpg" />
+    <Content Include="images\bubbles_big.jpg" />
+    <Content Include="images\darkgrey_bg.png" />
+    <Content Include="images\Logo.png" />
     <Content Include="images\nike_logo1.jpg" />
     <Content Include="images\nike_logo2.jpg" />
     <Content Include="images\nike_logo4.jpg" />
@@ -170,6 +187,8 @@
     <Content Include="images\nike_logo6.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="App_Data\salary.pdf" />
+    <Content Include="App_Data\AllSalaryReceiptsSent.pdf" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -190,6 +209,8 @@
     <Content Include="Views\Home\images\nike_logo4.jpg" />
     <Content Include="Views\Home\images\nike_logo5.jpg" />
     <Content Include="Views\Home\images\nike_logo6.jpg" />
+    <Content Include="Views\Home\images\thumbs\balance.jpg" />
+    <Content Include="Views\Home\images\thumbs\basket.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -242,10 +263,9 @@
     <Content Include="Views\Assignments\EmployeeDelete.cshtml" />
     <Content Include="Views\Assignments\WorkHours.cshtml" />
     <Content Include="Views\Assignments\SalaryEmployee.cshtml" />
+    <Content Include="Views\Assignments\SalaryEmployeePDF.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Home\images\thumbs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

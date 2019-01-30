@@ -10,6 +10,12 @@ using System.Net.Mime;
 using System.Web.Mvc;
 using System.Text.RegularExpressions;
 using WebAppMVC.Models;
+using System.IO;
+using System.Text;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
+using System.Drawing;
+
 
 
 namespace WebAppMVC.Controllers
@@ -27,6 +33,7 @@ namespace WebAppMVC.Controllers
         public string total { get; set; }
         public string employeename { get; set; }
         public string timeperiod { get; set; }
+        public string timeperiod_title { get; set; }
         public string startmonth = "0";
         public string startyear = "0";
         public List<string> emptotalhours { get; set; }
@@ -53,12 +60,48 @@ namespace WebAppMVC.Controllers
         {
             // ## Antal arbetade timmar för alla anställda för en viss månad - Kanske "CARDS" som FrontEnd
 
+            if (Request["Year"] != null)
+            {
+                startyear = Request["Year"];
+            }
+            else
+            {
+                startyear = "2019";
+            }
+
+            if (Request["Month"] != null)
+            {
+                startmonth = Request["Month"];
+            }
+            else
+            {
+                startmonth = "1";
+            }
+
+            int intyear = Convert.ToInt32(startyear);
+            int intmonth = Convert.ToInt32(startmonth);
+            int days = DateTime.DaysInMonth(intyear, intmonth);
+
+            ViewBag.startyear = startyear;
+            ViewBag.startmonth = startmonth;
+
+            string d = startyear + "-" + startmonth + "-01 00:00:00";
+            DateTime startdate = Convert.ToDateTime(d);
+
+            string d2 = startyear + "-" + startmonth + "-" + days.ToString() + " 00:00:00";
+
+            DateTime enddate = Convert.ToDateTime(d2);
+
+            ViewBag.timeperiod_title += "Timeperiod: " + startdate + " - " + enddate + " ";
+
             decimal TotalHours = 0;
             decimal TotalSalary = 0;
             decimal HourlyPay = 0;
             string Name = "";
 
-            hours = db.Assignment.Include(a => a.Customer).Include(a => a.Employee).OrderBy(a => a.EmployeeID).ToList();
+            //
+
+            hours = db.Assignment.Include(a => a.Customer).Include(a => a.Employee).Where(a => a.Date >= startdate).Where(a => a.Date <= enddate).OrderBy(a => a.EmployeeID).ToList();
 
             int x = 0;
             foreach (var el in hours)
@@ -69,10 +112,10 @@ namespace WebAppMVC.Controllers
                     x = 1;
                 }
                 if (Name == el.Employee.FirstName + " " + el.Employee.LastName)
-                {   
+                {
                     // Same employee                  
                     TotalHours += el.HoursAmount;
-                    
+
                 }
                 else
                 {
@@ -101,7 +144,8 @@ namespace WebAppMVC.Controllers
 
         public IList<Assignment> salary { get; set; }
 
-        
+        // Temporary action for Sending the Pdf Email
+
         // GET: Assignments - Show Salary Sum per Month for specific Employee - Assignments?id=1 .. 
         public ActionResult SalaryEmployee(int? id)
         {
@@ -140,7 +184,7 @@ namespace WebAppMVC.Controllers
             DateTime startdate = Convert.ToDateTime(d);
 
             string d2 = startyear + "-" + startmonth + "-" + days.ToString() + " 00:00:00";
-            
+
             DateTime enddate = Convert.ToDateTime(d2);
 
             decimal TotalHours = 0;
@@ -173,22 +217,55 @@ namespace WebAppMVC.Controllers
             ViewBag.workhours = "Total Hours: " + TotalHours + " Hours";
             ViewBag.total = "Total Salary: " + TotalSalary + "  ";
 
+            if (Request["SendEmail"] == "Yes")
+            {
+                using (PdfDocument document = new PdfDocument())
+                {
+                    string body = "From: SwipeIT Inc. \n\n" +
+                    "Current Salary Receipt. \n\n" +
+                    "Employeename: " + Name + "\n\n" + "Timeperiod: " + startdate.ToString() + " - " + enddate.ToString() + "\n\n" +
+                    "Hourly Salary: " + HourlyPay.ToString() + "\t" + "Total Hours: " + TotalHours.ToString() +
+                    "\n\n" + "Total Salary: " + TotalSalary.ToString() + "\n\n" +
+                    "Regards \nSwipeIT Inc. ";
+
+                    //Add a page to the document
+                    PdfPage page = document.Pages.Add();
+
+                    //Create PDF graphics for the page
+                    PdfGraphics graphics = page.Graphics;
+
+                    //Set the standard font
+                    PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
+
+                    //Draw the text
+                    graphics.DrawString(body, font, PdfBrushes.Black, new PointF(0, 0));
+
+                    // Open the document in browser after saving it
+                    document.Save("SalaryReceipt.pdf", HttpContext.ApplicationInstance.Response, HttpReadType.Save);
+
+                }
+
+            }
+
             if (Request["SendEmail"] != null)
             {
                 if (Request["SendEmail"] == "Yes")
                 {
+
                     // Use my own email-address for Testing, not DB Email, read Code above => 
                     // Comment out after Testing, the Row below =>
+                    
                     Emailto = "receiver@gmail.com";
 
-                    var body = "Email From: SwipeIT Inc. \n\n" +
-                    "Message: Here is your Current Salary Receipt. \n\n" +
-                    "Employeename: " + Name + "\n\n" + "Timeperiod: " + startdate + " - " + enddate + "\n" +
-                    "Hourly Salary: " + HourlyPay + "\t" + "Total Hours: " + TotalHours + "\t" + "Total Salary: " + TotalSalary + "\n\n" +
+                    var body = "From: SwipeIT Inc. \n\n" +
+                    "Current Salary Receipt. \n\n" +
+                    "Employeename: " + Name + "\n\n" + "Timeperiod: " + startdate + " - " + enddate + "\n\n" +
+                    "Hourly Salary: " + HourlyPay + "\t" + "Total Hours: " + TotalHours + "\n\n" +
+                    "Total Salary: " + TotalSalary + "\n\n" +
                     "Regards \nSwipeIT Inc. ";
-                
-                    string To = Emailto;  
-                    string From = "sendaddress@hotmail.com";  
+
+                    string To = Emailto;
+                    string From = "sender@hotmail.com";
                     string Subject = "Salary Receipt";
                     string Body = string.Format(body);
 
@@ -196,22 +273,24 @@ namespace WebAppMVC.Controllers
                     {
                         var credential = new NetworkCredential
                         {
-                            UserName = "sendaddress@hotmail.com",  
-                            Password = "password"  
+                            UserName = "sender@hotmail.com",
+                            Password = "password"
                         };
-                        
+
                         smtp.Credentials = credential;
                         smtp.Host = "smtp-mail.outlook.com";
                         smtp.Port = 587;
                         smtp.EnableSsl = true;
                         smtp.Send(From, To, Subject, Body);
-                        
+
                     }
+                    
                 }
             }
 
             return View(salary);
         }
+
 
         // GET: Assignments/Details/5
         public ActionResult Details(int? id)
